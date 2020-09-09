@@ -1,0 +1,140 @@
+Sir Thank you for reviewing my problem.
+I have used this light and dark theme it works correctly but not persistent/permanent.
+So kindly check this code where i have mistakn.
+
+.................................................................................................................................................................
+..........................................Following is the main app where the switch button is used...........................................................................
+.................................................................................................................................................................
+
+import 'package:provider/provider.dart';
+import '../FreelanceTheme/AppStyleModeNotifier.dart';
+
+class HomePage extends StatelessWidget with NavigationStates {
+  final Function onMenuTap;
+  const HomePage({Key key, this.onMenuTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final appStyleMode = Provider.of<AppStyleModeNotifier>(context);
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Color(0xffE5E5E5),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: appStyleMode.primaryBackgroundColor,
+          actions: <Widget>[
+            Switch(
+              activeColor: Colors.orange,
+              value: appStyleMode.mode,
+              onChanged: (value) => appStyleMode.switchMode(),
+            ),
+          ],
+
+          leading: Tooltip(
+            message: 'Settings',
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(10, 7, 0, 0),
+              child: CustomIcon(
+                onMenuTap: () {
+                  onMenuTap();
+                },
+              ),
+            ),
+          ),
+          centerTitle: true,
+          title: Text(
+            "Home",
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        body: FreelancingHomePage(),
+      ),
+    );
+  }
+}
+
+...............................................................................................................................................................
+Sir the problem is in the following code. Sir kindly correct this code. I will be very thankful.
+
+.................................................................................................................................................................
+..........................................This is the File for the Dark and Light Theme..........................................................................
+.................................................................................................................................................................
+
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class AppStyleModeNotifier extends ChangeNotifier {
+  final String key = "theme";
+  SharedPreferences _prefs;
+  bool mode = false; //0 for light and 1 for dark
+  
+  Color primaryBackgroundColor = Colors.white;
+  Color appBarBackgroundColor = Colors.white;
+  Color boxColor = Colors.blue[50];
+  Color boxTextColor = Colors.indigo;
+  Color primaryTextColor = Colors.white;
+  Color dashboardColor = Colors.cyan;
+  Color dashboardTextColor = Colors.red[600];
+  Color dashboardIconColor = Colors.yellow[200];
+  //Color typeMessageBoxColor = Colors.grey[200];
+  
+  
+_loadFromPrefs();
+
+  switchMode() {
+    if (mode == false) {
+      //if it is light mode currently switch to dark
+      primaryBackgroundColor = Colors.grey[900];
+      appBarBackgroundColor = Colors.grey[800];
+      // boxColor = Colors.grey[600];
+      boxColor = Colors.black;
+      boxTextColor = Colors.grey[100];
+      primaryTextColor = Colors.black;
+      dashboardColor = Colors.grey[900];
+      dashboardTextColor = Colors.grey[400];
+      dashboardIconColor = Colors.white;
+      //typeMessageBoxColor = Colors.grey[800];
+      mode = true;
+    } else {
+     Color primaryBackgroundColor = Colors.white;
+     Color appBarBackgroundColor = Colors.white;
+     Color boxColor = Colors.blue[50];
+     Color boxTextColor = Colors.indigo;
+     Color primaryTextColor = Colors.white;
+     Color dashboardColor = Colors.cyan;
+     Color dashboardTextColor = Colors.red[600];
+     Color dashboardIconColor = Colors.yellow[200];
+   //Color typeMessageBoxColor = Colors.grey[200];
+      mode = false;
+    }
+
+  }
+    notifyListeners();
+
+    _initPrefs() async {
+    if(_prefs == null)
+      _prefs = await SharedPreferences.getInstance();
+  }
+
+  _loadFromPrefs() async {
+    await _initPrefs();
+    mode = _prefs.getBool(key) ?? true;
+    notifyListeners();
+  }
+
+  _saveToPrefs()async {
+    await _initPrefs();
+    _prefs.setBool(key, mode);
+  }
+
+
+}
+
+............................................................................................................................................................................
+
+Thank You Sir
+
+
